@@ -1,0 +1,9 @@
+{
+  "preprocessing_version": "1.0.0",
+  "min_content_length": 10,
+  "html_stripping": "BeautifulSoup html.parser removing [script, style, head, title, meta, [document]]",
+  "whitespace_normalization": "re.sub(r'\\s+', ' ', text).strip()",
+  "composite_template": "SUBJECT:\\n{clean_subj}\\n\\nBODY:\\n{body_content}",
+  "url_handling": "URLs and domain names preserved intact as phishing indicators",
+  "deduplication_fingerprint": "SHA256(clean_subject.lower() + ' ' + clean_body)"
+}

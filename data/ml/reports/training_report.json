@@ -1,0 +1,106 @@
+{
+  "model_version": "2.0.0",
+  "timestamp": "2026-09-07T05:13:01.351555+00:00",
+  "training_duration_seconds": 21.52,
+  "hyperparameter_tuning_log": [
+    {
+      "params": {
+        "C": 0.5,
+        "max_features": 5000,
+        "ngram_range": [
+          1,
+          2
+        ]
+      },
+      "val_accuracy": 0.9868421052631579,
+      "val_f1": 0.9836065573770492,
+      "val_recall": 0.967741935483871,
+      "val_precision": 1.0,
+      "val_auc": 0.9948028673835125
+    },
+    {
+      "params": {
+        "C": 1.0,
+        "max_features": 5000,
+        "ngram_range": [
+          1,
+          2
+        ]
+      },
+      "val_accuracy": 0.9901315789473685,
+      "val_f1": 0.9877551020408163,
+      "val_recall": 0.9758064516129032,
+      "val_precision": 1.0,
+      "val_auc": 0.9948028673835125
+    },
+    {
+      "params": {
+        "C": 5.0,
+        "max_features": 5000,
+        "ngram_range": [
+          1,
+          2
+        ]
+      },
+      "val_accuracy": 0.9901315789473685,
+      "val_f1": 0.9877551020408163,
+      "val_recall": 0.9758064516129032,
+      "val_precision": 1.0,
+      "val_auc": 0.9941756272401434
+    },
+    {
+      "params": {
+        "C": 10.0,
+        "max_features": 5000,
+        "ngram_range": [
+          1,
+          2
+        ]
+      },
+      "val_accuracy": 0.9868421052631579,
+      "val_f1": 0.983739837398374,
+      "val_recall": 0.9758064516129032,
+      "val_precision": 0.9918032786885246,
+      "val_auc": 0.9939068100358422
+    },
+    {
+      "params": {
+        "C": 5.0,
+        "max_features": 8000,
+        "ngram_range": [
+          1,
+          2
+        ]
+      },
+      "val_accuracy": 0.9901315789473685,
+      "val_f1": 0.9877551020408163,
+      "val_recall": 0.9758064516129032,
+      "val_precision": 1.0,
+      "val_auc": 0.9941756272401434
+    },
+    {
+      "params": {
+        "C": 10.0,
+        "max_features": 8000,
+        "ngram_range": [
+          1,
+          2
+        ]
+      },
+      "val_accuracy": 0.9901315789473685,
+      "val_f1": 0.9877551020408163,
+      "val_recall": 0.9758064516129032,
+      "val_precision": 1.0,
+      "val_auc": 0.9938172043010751
+    }
+  ],
+  "selected_hyperparameters": {
+    "C": 1.0,
+    "max_features": 5000,
+    "ngram_range": [
+      1,
+      2
+    ]
+  },
+  "train_validation_size": 1722
+}

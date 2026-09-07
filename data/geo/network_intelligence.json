@@ -1,0 +1,42 @@
+{
+  "feed_version": "2026.09.1",
+  "description": "Deterministic local network intelligence feed for Tor/VPN/Proxy/Hosting forensic detection",
+  "records": {
+    "198.51.100.50": {
+      "ip": "198.51.100.50",
+      "is_tor_exit": true,
+      "is_vpn": false,
+      "is_proxy": false,
+      "is_datacenter_hosting": true,
+      "provider_name": "Tor Project Directory",
+      "source": "local-tor-exit-list"
+    },
+    "203.0.113.199": {
+      "ip": "203.0.113.199",
+      "is_tor_exit": false,
+      "is_vpn": true,
+      "is_proxy": true,
+      "is_datacenter_hosting": true,
+      "provider_name": "M247 Commercial VPN",
+      "source": "local-vpn-intel"
+    },
+    "198.51.100.1": {
+      "ip": "198.51.100.1",
+      "is_tor_exit": false,
+      "is_vpn": false,
+      "is_proxy": false,
+      "is_datacenter_hosting": true,
+      "provider_name": "Cloudflare Reverse Proxy",
+      "source": "local-cdn-intel"
+    },
+    "192.0.2.1": {
+      "ip": "192.0.2.1",
+      "is_tor_exit": false,
+      "is_vpn": false,
+      "is_proxy": false,
+      "is_datacenter_hosting": true,
+      "provider_name": "Hetzner Datacenter Relay",
+      "source": "local-hosting-intel"
+    }
+  }
+}

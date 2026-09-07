@@ -1,0 +1,65 @@
+from app.correlation.models import (
+    CorrelationConfidence,
+    CorrelationConflict,
+    CorrelationResult,
+    EngineSignal,
+    EvidenceCoverage,
+    EvidenceEntity,
+    EvidenceGraph,
+    EvidenceObservation,
+    FinalAssessment,
+    SignalAvailability,
+    TopEvidenceItem,
+    UpstreamVersions,
+)
+from app.correlation.policy import (
+    DEFAULT_ENGINE_WEIGHTS,
+    ENTITY_OVERLAP_DISCOUNT_FACTOR,
+    MIN_COVERAGE_FOR_ASSESSMENT,
+    SEVERE_IOC_CONFIDENCE_THRESHOLD,
+    SEVERE_IOC_MIN_SCORE,
+    THRESHOLD_BENIGN_MAX,
+    THRESHOLD_SUSPICIOUS_MAX,
+)
+from app.correlation.normalizer import (
+    normalize_geo_signal,
+    normalize_ioc_signal,
+    normalize_ml_signal,
+    normalize_rules_signal,
+)
+from app.correlation.evidence_graph import build_evidence_graph
+from app.correlation.engine import (
+    CorrelationEngine,
+    evaluate_correlation,
+    get_correlation_engine,
+)
+
+__all__ = [
+    "CorrelationConfidence",
+    "CorrelationConflict",
+    "CorrelationResult",
+    "EngineSignal",
+    "EvidenceCoverage",
+    "EvidenceEntity",
+    "EvidenceGraph",
+    "EvidenceObservation",
+    "FinalAssessment",
+    "SignalAvailability",
+    "TopEvidenceItem",
+    "UpstreamVersions",
+    "DEFAULT_ENGINE_WEIGHTS",
+    "ENTITY_OVERLAP_DISCOUNT_FACTOR",
+    "MIN_COVERAGE_FOR_ASSESSMENT",
+    "SEVERE_IOC_CONFIDENCE_THRESHOLD",
+    "SEVERE_IOC_MIN_SCORE",
+    "THRESHOLD_BENIGN_MAX",
+    "THRESHOLD_SUSPICIOUS_MAX",
+    "normalize_geo_signal",
+    "normalize_ioc_signal",
+    "normalize_ml_signal",
+    "normalize_rules_signal",
+    "build_evidence_graph",
+    "CorrelationEngine",
+    "evaluate_correlation",
+    "get_correlation_engine",
+]

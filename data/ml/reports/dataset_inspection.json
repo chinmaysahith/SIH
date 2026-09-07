@@ -1,0 +1,163 @@
+{
+  "report_title": "Stage 4.5 Dataset Inspection and Provenance Report",
+  "generated_at": "2026-09-07T05:11:30Z",
+  "datasets_inspected": [
+    {
+      "dataset": "Nazario Phishing Corpus (2024)",
+      "file": "ml_datasets/phishing/phishing-2024",
+      "actual_format": "Unix mbox (RFC 2822 / MIME text)",
+      "source": "Jose Nazario Phishing Archive (https://monkey.org/~jose/phishing/)",
+      "detected_fields": [
+        "From",
+        "Subject",
+        "Date",
+        "Message-ID",
+        "Content-Type",
+        "MIME bodies (text/plain, text/html)"
+      ],
+      "detected_labels": "Phishing (fraudulent access notices, Netflix billing errors, Wells Fargo/Chase bank alerts)",
+      "message_count": 403,
+      "usable_messages": 402,
+      "class_distribution": {
+        "phishing": 402,
+        "legitimate": 0
+      },
+      "duplicates": 14,
+      "empty_short_records": 0,
+      "html_availability": "421 HTML MIME parts present",
+      "recommended_role": "PRIMARY PHISHING (label=1)",
+      "problems_limitations": "1 MAILER-DAEMON folder status record discarded; high proportion of HTML-only templates",
+      "sha256": "60afa40a2757170093a2bde31ec9cda4e54d33992203ce04bfbbc86d2e5e5b99",
+      "status": "USED"
+    },
+    {
+      "dataset": "Nazario Phishing Corpus (2025)",
+      "file": "ml_datasets/phishing/phishing-2025",
+      "actual_format": "Unix mbox (RFC 2822 / MIME text)",
+      "source": "Jose Nazario Phishing Archive (https://monkey.org/~jose/phishing/)",
+      "detected_fields": [
+        "From",
+        "Subject",
+        "Date",
+        "Message-ID",
+        "Content-Type",
+        "MIME bodies (text/plain, text/html)"
+      ],
+      "detected_labels": "Phishing (DocuSign signature lures, mailbox storage quotas, financial alerts)",
+      "message_count": 481,
+      "usable_messages": 481,
+      "class_distribution": {
+        "phishing": 481,
+        "legitimate": 0
+      },
+      "duplicates": 24,
+      "empty_short_records": 1,
+      "html_availability": "488 HTML MIME parts present",
+      "recommended_role": "PRIMARY PHISHING (label=1)",
+      "problems_limitations": "Zero cross-year overlap with 2024 corpus",
+      "sha256": "f1fa7e0fe35c9a16f36d9aa20ade7e1d3908d1d0c1d917b8c53c8aa799ec1c8f",
+      "status": "USED"
+    },
+    {
+      "dataset": "Enron Email Dataset",
+      "file": "ml_datasets/kaggle/emails.csv",
+      "actual_format": "CSV (file, message) with RFC 2822 email text",
+      "source": "FERC / CALO Project / Kaggle",
+      "detected_fields": [
+        "file (employee/mailbox path)",
+        "message (RFC 2822 full email text)"
+      ],
+      "detected_labels": "Legitimate business communications (scheduling, power contracts, internal memos)",
+      "message_count": 517401,
+      "usable_messages": 517401,
+      "class_distribution": {
+        "phishing": 0,
+        "legitimate": 517401
+      },
+      "duplicates": "Multiple forwarded/re-sent internal threads",
+      "empty_short_records": 0,
+      "html_availability": "Predominantly plain text (JavaMail/Notes format)",
+      "recommended_role": "PRIMARY LEGITIMATE (label=0)",
+      "problems_limitations": "1.43 GB file requires streaming chunked reads; stratified sample of 1,200 emails across 150 employees extracted to balance ~827 Nazario phishing samples",
+      "sha256": "a605f0a2ca4a4feaa557eb0f2be825914906dca816066d7e58983e7e2e8bd274",
+      "status": "USED"
+    },
+    {
+      "dataset": "SpamAssassin Easy Ham",
+      "file": "ml_datasets/spamassassin/20021010_easy_ham.tar.bz2",
+      "actual_format": "Tar archive compressed with bzip2 (individual RFC 2822 files)",
+      "source": "Apache SpamAssassin Project (https://spamassassin.apache.org/old/publiccorpus/)",
+      "detected_fields": [
+        "From",
+        "Subject",
+        "Date",
+        "Received",
+        "List-Id",
+        "Body"
+      ],
+      "detected_labels": "Legitimate mailing lists, technical discussions, RPM packaging, Linux kernel",
+      "message_count": 2551,
+      "usable_messages": 2551,
+      "class_distribution": {
+        "phishing": 0,
+        "legitimate": 2551
+      },
+      "duplicates": 142,
+      "empty_short_records": 0,
+      "html_availability": "Plain text mailing list discussions",
+      "recommended_role": "EXTERNAL VALIDATION (Legitimate baseline / False Positive Rate)",
+      "problems_limitations": "Early 2000s mailing list artifacts; held strictly external from training splits",
+      "sha256": "f9fc56e1f68780f9afdc6d23a2e24c4584af988afc58bbfabae500e51f3a2f36",
+      "status": "USED_EXTERNAL"
+    },
+    {
+      "dataset": "SpamAssassin Spam 2",
+      "file": "ml_datasets/spamassassin/20050311_spam_2.tar.bz2",
+      "actual_format": "Tar archive compressed with bzip2 (individual RFC 2822 files)",
+      "source": "Apache SpamAssassin Project (https://spamassassin.apache.org/old/publiccorpus/)",
+      "detected_fields": [
+        "From",
+        "Subject",
+        "Date",
+        "Received",
+        "Body"
+      ],
+      "detected_labels": "Commercial bulk spam (MLM, diet pills, financial grants, adult advertising)",
+      "message_count": 1397,
+      "usable_messages": 1395,
+      "class_distribution": {
+        "spam": 1395,
+        "legitimate": 0
+      },
+      "duplicates": 58,
+      "empty_short_records": 1,
+      "html_availability": "Mixed HTML and Plain text",
+      "recommended_role": "EXTERNAL VALIDATION (Out-of-Distribution Bulk Spam Robustness)",
+      "problems_limitations": "Commercial spam != credential phishing; held strictly external to avoid skewing phishing definition",
+      "sha256": "44280a0e28bf7645b2279e8e42659271ad82c6f40bf8d364dbda7f1df344a765",
+      "status": "USED_EXTERNAL"
+    }
+  ],
+  "deduplication_summary": {
+    "total_raw_candidates": 2083,
+    "exact_duplicates_removed": 56,
+    "cross_dataset_duplicates": 1,
+    "retained_unique_samples": 2027,
+    "class_distribution": {
+      "phishing": 827,
+      "phishing_percentage": 40.8,
+      "legitimate": 1200,
+      "legitimate_percentage": 59.2
+    }
+  },
+  "splits_summary": {
+    "train_count": 1418,
+    "validation_count": 304,
+    "test_count": 305,
+    "random_state": 42,
+    "stratified": true,
+    "leakage_hashes_train_val": 0,
+    "leakage_hashes_train_test": 0,
+    "leakage_hashes_val_test": 0
+  }
+}

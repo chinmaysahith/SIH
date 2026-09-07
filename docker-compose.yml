@@ -1,0 +1,74 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: email_fraud_redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: email_fraud_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - BACKEND_HOST=0.0.0.0
+      - BACKEND_PORT=8000
+      - FRONTEND_URL=http://localhost:3000
+      - REDIS_URL=redis://redis:6379/0
+      - QUEUE_NAME=email_analysis
+      - QUARANTINE_DIR=/data/quarantine
+      - DATABASE_URL=sqlite:////data/forensic_cases.db
+      - MAX_UPLOAD_SIZE_MB=25
+    volumes:
+      - ./backend:/app
+      - ./data:/data
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: email_fraud_worker
+    command: ["python", "-m", "app.worker"]
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - QUEUE_NAME=email_analysis
+      - QUARANTINE_DIR=/data/quarantine
+      - DATABASE_URL=sqlite:////data/forensic_cases.db
+    volumes:
+      - ./backend:/app
+      - ./data:/data
+    depends_on:
+      redis:
+        condition: service_healthy
+      backend:
+        condition: service_started
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: email_fraud_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - backend
+    restart: unless-stopped

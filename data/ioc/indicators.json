@@ -1,0 +1,94 @@
+{
+  "feed_version": "2026.09.1",
+  "description": "Controlled local development threat intelligence feed for Email Fraud Forensic Analysis Platform",
+  "indicators": [
+    {
+      "type": "DOMAIN",
+      "value": "malicious-phish-bank.test",
+      "status": "known_malicious",
+      "confidence": 95,
+      "source": "local-dev-feed",
+      "reason": "Active phishing infrastructure impersonating financial institutions"
+    },
+    {
+      "type": "DOMAIN",
+      "value": "credential-harvest-login.example",
+      "status": "known_malicious",
+      "confidence": 98,
+      "source": "local-dev-feed",
+      "reason": "Known credential harvesting endpoint"
+    },
+    {
+      "type": "DOMAIN",
+      "value": "suspicious-marketing-track.test",
+      "status": "known_suspicious",
+      "confidence": 60,
+      "source": "local-dev-feed",
+      "reason": "Unverified third-party redirect service"
+    },
+    {
+      "type": "DOMAIN",
+      "value": "trusted-partner-service.test",
+      "status": "known_benign",
+      "confidence": 90,
+      "source": "local-dev-feed",
+      "reason": "Verified legitimate business partner domain"
+    },
+    {
+      "type": "IP",
+      "value": "203.0.113.199",
+      "status": "known_malicious",
+      "confidence": 92,
+      "source": "local-dev-feed",
+      "reason": "Known malware C2 server IP address (RFC 5737 TEST-NET-3)"
+    },
+    {
+      "type": "IP",
+      "value": "198.51.100.50",
+      "status": "known_suspicious",
+      "confidence": 65,
+      "source": "local-dev-feed",
+      "reason": "Bulletproof hosting IP range (RFC 5737 TEST-NET-2)"
+    },
+    {
+      "type": "URL",
+      "value": "http://malicious-phish-bank.test/login/verify",
+      "status": "known_malicious",
+      "confidence": 98,
+      "source": "local-dev-feed",
+      "reason": "Known credential harvesting URL targeting banking users"
+    },
+    {
+      "type": "URL",
+      "value": "http://203.0.113.199/malware.exe",
+      "status": "known_malicious",
+      "confidence": 95,
+      "source": "local-dev-feed",
+      "reason": "Direct IP download link for ransomware dropper"
+    },
+    {
+      "type": "SHA256",
+      "value": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": "known_suspicious",
+      "confidence": 50,
+      "source": "local-dev-feed",
+      "reason": "Empty file payload hash"
+    },
+    {
+      "type": "SHA256",
+      "value": "2a0a767f4b3e8c9d1a2b3c4d5e6f708192a1b2c3d4e5f60718293a4b5c6d7e8f",
+      "status": "known_malicious",
+      "confidence": 99,
+      "source": "local-dev-feed",
+      "reason": "Known trojan dropper attachment hash"
+    },
+    {
+      "type": "SHA256",
+      "value": "bad1dea000000000000000000000000000000000000000000000000000000001",
+      "status": "known_malicious",
+      "confidence": 95,
+      "source": "local-dev-feed",
+      "reason": "Known credential stealer payload hash"
+    }
+  ]
+}

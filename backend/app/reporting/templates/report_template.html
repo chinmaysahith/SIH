@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Forensic Investigation Report — {{ report.case_info.case_id }}</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 1.5cm;
+      @bottom-right {
+        content: "Page " counter(page) " of " counter(pages);
+      }
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #1f2328;
+      background-color: #ffffff;
+      line-height: 1.45;
+      font-size: 11pt;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .header-banner {
+      border-bottom: 2px solid #0969da;
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .report-title {
+      font-size: 20pt;
+      font-weight: 800;
+      color: #1f2328;
+      margin: 0 0 4px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .report-subtitle {
+      font-size: 10pt;
+      color: #57606a;
+      margin: 0;
+    }
+    .report-meta-box {
+      text-align: right;
+      font-size: 9pt;
+      color: #57606a;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+    }
+    .exec-summary-card {
+      background-color: #f6f8fa;
+      border: 1px solid #d0d7de;
+      border-radius: 6px;
+      padding: 16px;
+      margin-bottom: 24px;
+      page-break-inside: avoid;
+    }
+    .exec-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #d0d7de;
+      padding-bottom: 12px;
+    }
+    .metric-label {
+      font-size: 8.5pt;
+      text-transform: uppercase;
+      color: #57606a;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .metric-val {
+      font-size: 15pt;
+      font-weight: 800;
+    }
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      font-size: 9pt;
+      font-weight: 700;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .badge-high-risk {
+      background-color: #ffebe9;
+      color: #cf222e;
+      border: 1px solid #ff8182;
+    }
+    .badge-suspicious {
+      background-color: #fff8c5;
+      color: #9a6700;
+      border: 1px solid #d4a72c;
+    }
+    .badge-benign {
+      background-color: #dafbe1;
+      color: #1a7f37;
+      border: 1px solid #4ac26b;
+    }
+    .badge-inconclusive {
+      background-color: #f6f8fa;
+      color: #57606a;
+      border: 1px solid #d0d7de;
+    }
+    .section-title {
+      font-size: 13pt;
+      font-weight: 700;
+      color: #1f2328;
+      border-bottom: 1px solid #d0d7de;
+      padding-bottom: 4px;
+      margin-top: 24px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      page-break-after: avoid;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+      font-size: 9.5pt;
+    }
+    table.data-table th, table.data-table td {
+      border: 1px solid #d0d7de;
+      padding: 6px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    table.data-table th {
+      background-color: #f6f8fa;
+      font-weight: 600;
+      color: #24292f;
+    }
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+      font-size: 8.5pt;
+      word-break: break-all;
+    }
+    .box {
+      background-color: #f6f8fa;
+      border: 1px solid #d0d7de;
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+    }
+    .alert-box {
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      font-size: 9.5pt;
+    }
+    .alert-danger {
+      background-color: #ffebe9;
+      border: 1px solid #cf222e;
+      color: #82071e;
+    }
+    .alert-warning {
+      background-color: #fff8c5;
+      border: 1px solid #9a6700;
+      color: #633c01;
+    }
+    .alert-success {
+      background-color: #dafbe1;
+      border: 1px solid #1a7f37;
+      color: #116329;
+    }
+    .disclaimer-box {
+      background-color: #f6f8fa;
+      border-left: 4px solid #57606a;
+      padding: 10px 14px;
+      font-size: 8.5pt;
+      color: #57606a;
+      margin-top: 30px;
+      page-break-inside: avoid;
+    }
+    @media print {
+      body {
+        font-size: 10pt;
+      }
+      .container {
+        max-width: 100%;
+        padding: 0;
+      }
+      .section-title {
+        page-break-after: avoid;
+      }
+      table.data-table {
+        page-break-inside: auto;
+      }
+      tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- HEADER / METADATA -->
+    <div class="header-banner">
+      <div>
+        <h1 class="report-title">Forensic Analysis Report</h1>
+        <p class="report-subtitle">Email Fraud &amp; Forensic Investigation Artifact • Version {{ report.metadata.report_version }}</p>
+      </div>
+      <div class="report-meta-box">
+        <div><strong>Report ID:</strong> {{ report.metadata.report_id }}</div>
+        <div><strong>Generated:</strong> {{ report.metadata.generated_timestamp }}</div>
+        <div><strong>Content SHA-256:</strong> <span class="mono">{{ report.metadata.report_sha256[:16] }}...</span></div>
+      </div>
+    </div>
+
+    <!-- 1. EXECUTIVE SUMMARY -->
+    <div class="exec-summary-card">
+      <div class="exec-grid">
+        <div>
+          <div class="metric-label">Final Assessment</div>
+          <div>
+            {% if report.executive_summary.final_assessment == 'HIGH_RISK' %}
+              <span class="badge badge-high-risk">HIGH RISK</span>
+            {% elif report.executive_summary.final_assessment == 'SUSPICIOUS' %}
+              <span class="badge badge-suspicious">SUSPICIOUS</span>
+            {% elif report.executive_summary.final_assessment == 'BENIGN' %}
+              <span class="badge badge-benign">BENIGN</span>
+            {% else %}
+              <span class="badge badge-inconclusive">{{ report.executive_summary.final_assessment }}</span>
+            {% endif %}
+          </div>
+        </div>
+        <div>
+          <div class="metric-label">Risk Rating</div>
+          <div class="metric-val" style="color: #0969da;">{{ report.executive_summary.risk_score }} <span style="font-size: 9pt; font-weight: 500; color: #57606a;">/ 100</span></div>
+        </div>
+        <div>
+          <div class="metric-label">Confidence</div>
+          <div class="metric-val" style="font-size: 13pt;">{{ report.executive_summary.confidence }}</div>
+        </div>
+        <div>
+          <div class="metric-label">Evidence Coverage</div>
+          <div class="metric-val" style="font-size: 13pt;">{{ report.executive_summary.evidence_coverage_percent }}%</div>
+        </div>
+      </div>
+      <div style="font-size: 9.5pt; color: #24292f;">
+        <strong>Investigative Summary:</strong> {{ report.executive_summary.concise_summary }}
+      </div>
+    </div>
+
+    <!-- 2. CASE INFORMATION & EVIDENCE INTEGRITY -->
+    <div class="section-title">Case Information &amp; Evidence Integrity</div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+      <div class="box">
+        <table style="width: 100%; font-size: 9pt; border-collapse: collapse;">
+          <tr><td style="color: #57606a; padding: 3px 0; width: 35%;"><strong>Case ID:</strong></td><td>{{ report.case_info.case_id }}</td></tr>
+          <tr><td style="color: #57606a; padding: 3px 0;"><strong>Original File:</strong></td><td>{{ report.case_info.original_filename }}</td></tr>
+          <tr><td style="color: #57606a; padding: 3px 0;"><strong>Uploaded:</strong></td><td>{{ report.case_info.upload_timestamp }}</td></tr>
+          <tr><td style="color: #57606a; padding: 3px 0;"><strong>File Size:</strong></td><td>{{ report.case_info.file_size_bytes }} bytes</td></tr>
+          <tr><td style="color: #57606a; padding: 3px 0;"><strong>Case Status:</strong></td><td><strong>{{ report.case_info.case_status }}</strong></td></tr>
+        </table>
+      </div>
+      <div class="box">
+        <div style="font-size: 8.5pt; text-transform: uppercase; color: #57606a; font-weight: 600; margin-bottom: 4px;">Evidence Cryptographic Integrity</div>
+        <div style="font-size: 9pt; margin-bottom: 4px;">
+          Status:
+          {% if report.evidence_integrity.integrity_status == 'VERIFIED' %}
+            <span class="badge badge-benign">VERIFIED INTACT</span>
+          {% else %}
+            <span class="badge badge-high-risk">{{ report.evidence_integrity.integrity_status }}</span>
+          {% endif %}
+        </div>
+        <div class="mono" style="font-size: 8pt; margin-bottom: 4px;">Original: {{ report.evidence_integrity.original_sha256 }}</div>
+        <div class="mono" style="font-size: 8pt; margin-bottom: 4px;">Current:  {{ report.evidence_integrity.current_sha256 }}</div>
+        <div style="font-size: 8.5pt; color: {% if report.evidence_integrity.bytes_altered == 0 %}#1a7f37{% else %}#cf222e{% endif %}; font-weight: 600;">
+          Bytes Altered: {{ report.evidence_integrity.bytes_altered }}
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. EMAIL OVERVIEW -->
+    {% if report.email_overview %}
+    <div class="section-title">Email Overview</div>
+    <table class="data-table">
+      <tr><th style="width: 20%;">From</th><td>{{ report.email_overview.sender_from }}</td></tr>
+      <tr><th>To</th><td>{{ report.email_overview.to|join(", ") if report.email_overview.to else "None specified" }}</td></tr>
+      {% if report.email_overview.cc %}
+      <tr><th>Cc</th><td>{{ report.email_overview.cc|join(", ") }}</td></tr>
+      {% endif %}
+      {% if report.email_overview.reply_to %}
+      <tr><th>Reply-To</th><td>{{ report.email_overview.reply_to }}</td></tr>
+      {% endif %}
+      <tr><th>Subject</th><td><strong>{{ report.email_overview.subject }}</strong></td></tr>
+      <tr><th>Date</th><td>{{ report.email_overview.date or "N/A" }}</td></tr>
+      <tr><th>Message-ID</th><td class="mono">{{ report.email_overview.message_id or "N/A" }}</td></tr>
+      <tr><th>Content-Type</th><td>{{ report.email_overview.content_type or "N/A" }}</td></tr>
+      {% if report.email_overview.body_plain_snippet %}
+      <tr>
+        <th>Plain Text Snippet</th>
+        <td style="white-space: pre-wrap; font-size: 8.5pt; max-height: 120px; overflow-y: auto;">{{ report.email_overview.body_plain_snippet }}</td>
+      </tr>
+      {% endif %}
+    </table>
+    {% endif %}
+
+    <!-- 4. HEADER ANALYSIS (RECEIVED CHAIN) -->
+    {% if report.header_analysis and report.header_analysis.received_chain %}
+    <div class="section-title">Header Analysis &amp; Relay Progression ({{ report.header_analysis.total_hops }} Hops)</div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width: 8%;">Hop</th>
+          <th style="width: 25%;">From Host</th>
+          <th style="width: 25%;">By Host</th>
+          <th style="width: 18%;">IP Address</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for hop in report.header_analysis.received_chain %}
+        <tr>
+          <td><strong>Hop {{ hop.hop_index }}</strong></td>
+          <td class="mono">{{ hop.from_host or "N/A" }}</td>
+          <td class="mono">{{ hop.by_host or "N/A" }}</td>
+          <td class="mono">{{ hop.ip or "N/A" }}</td>
+          <td style="font-size: 8.5pt;">{{ hop.timestamp or "N/A" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+
+    <!-- 5. RULES FINDINGS -->
+    {% if report.rules_findings %}
+    <div class="section-title">Rules Engine Findings (v{{ report.rules_findings.rules_engine_version }})</div>
+    <div style="display: flex; gap: 16px; margin-bottom: 12px;">
+      <div class="box" style="flex: 1; margin-bottom: 0;">
+        <strong>Verdict:</strong> {{ report.rules_findings.verdict }} • 
+        <strong>Score:</strong> {{ report.rules_findings.total_score }} / 100 • 
+        <strong>Rules Matched:</strong> {{ report.rules_findings.matched_rules|length }} of {{ report.rules_findings.total_rules_evaluated }}
+      </div>
+    </div>
+    {% if report.rules_findings.matched_rules %}
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width: 18%;">Rule ID</th>
+          <th style="width: 14%;">Category</th>
+          <th style="width: 10%;">Points</th>
+          <th>Description &amp; Forensic Evidence</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for rule in report.rules_findings.matched_rules %}
+        <tr>
+          <td class="mono"><strong>{{ rule.rule_id }}</strong></td>
+          <td>{{ rule.category }}</td>
+          <td>+{{ rule.points }}</td>
+          <td>
+            <div>{{ rule.description }}</div>
+            {% if rule.evidence %}
+            <div class="mono" style="font-size: 8pt; color: #57606a; margin-top: 3px;">
+              Evidence: {{ rule.evidence }}
+            </div>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="box" style="font-size: 9pt; color: #57606a;">No deterministic fraud rules triggered.</div>
+    {% endif %}
+    {% endif %}
+
+    <!-- 6. MACHINE LEARNING FINDINGS -->
+    {% if report.ml_findings %}
+    <div class="section-title">Machine Learning Phishing Classifier (v{{ report.ml_findings.model_version }})</div>
+    <table class="data-table">
+      <tr>
+        <th style="width: 25%;">Prediction</th>
+        <td><strong>{{ report.ml_findings.prediction }}</strong> (Confidence: {{ report.ml_findings.confidence }})</td>
+      </tr>
+      <tr>
+        <th>Phishing Probability</th>
+        <td><strong>{{ report.ml_findings.phishing_probability }}</strong> (Range: 0.0000 - 1.0000)</td>
+      </tr>
+      <tr>
+        <th>Model Status</th>
+        <td>{{ report.ml_findings.model_status }}</td>
+      </tr>
+      {% if report.ml_findings.top_features %}
+      <tr>
+        <th>Top Feature Tokens</th>
+        <td>
+          <table style="width: 100%; font-size: 8.5pt; border-collapse: collapse;">
+            <thead><tr><th style="border:none; background:none;">Token</th><th style="border:none; background:none;">Weight</th><th style="border:none; background:none;">Direction</th></tr></thead>
+            <tbody>
+              {% for feat in report.ml_findings.top_features %}
+              <tr>
+                <td class="mono" style="border:none; padding: 2px 4px;">{{ feat.token }}</td>
+                <td style="border:none; padding: 2px 4px;">{{ feat.weight }}</td>
+                <td style="border:none; padding: 2px 4px; color: {% if feat.direction == 'phishing' %}#cf222e{% else %}#1a7f37{% endif %};">
+                  {{ feat.direction }}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      {% endif %}
+    </table>
+    <div style="font-size: 8.5pt; color: #57606a; margin-bottom: 14px;">
+      <em>Note: {{ report.ml_findings.interpretation_note }}</em>
+    </div>
+    {% endif %}
+
+    <!-- 7. IOC THREAT INTELLIGENCE -->
+    {% if report.ioc_findings %}
+    <div class="section-title">IOC Threat Intelligence Evaluation ({{ report.ioc_findings.total_iocs }} Extracted)</div>
+    <div style="display: flex; gap: 12px; margin-bottom: 12px; font-size: 9pt;">
+      <span><strong>Malicious:</strong> <span style="color: #cf222e;">{{ report.ioc_findings.malicious_iocs }}</span></span>
+      <span><strong>Suspicious:</strong> <span style="color: #9a6700;">{{ report.ioc_findings.suspicious_iocs }}</span></span>
+      <span><strong>Not Found:</strong> {{ report.ioc_findings.not_found_iocs }}</span>
+      <span style="color: #57606a;">• Feeds: {{ report.ioc_findings.feed_provenance|join(", ") if report.ioc_findings.feed_provenance else "Local Intelligence" }}</span>
+    </div>
+    {% if report.ioc_findings.indicators %}
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width: 12%;">Type</th>
+          <th style="width: 35%;">Indicator Value</th>
+          <th style="width: 18%;">Status</th>
+          <th style="width: 15%;">Source / Conf.</th>
+          <th>Reason</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ioc in report.ioc_findings.indicators %}
+        <tr>
+          <td><strong>{{ ioc.ioc_type }}</strong></td>
+          <td class="mono">{{ ioc.value }}</td>
+          <td>
+            {% if 'MALICIOUS' in ioc.status %}
+              <span class="badge badge-high-risk">{{ ioc.status }}</span>
+            {% elif 'SUSPICIOUS' in ioc.status %}
+              <span class="badge badge-suspicious">{{ ioc.status }}</span>
+            {% else %}
+              <span class="badge badge-inconclusive">{{ ioc.status }}</span>
+            {% endif %}
+          </td>
+          <td>{{ ioc.source }} ({{ ioc.confidence }}%)</td>
+          <td style="font-size: 8.5pt;">{{ ioc.reason }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+    {% endif %}
+
+    <!-- 8. ATTACHMENT FINDINGS -->
+    {% if report.attachment_findings and report.attachment_findings.total_attachments > 0 %}
+    <div class="section-title">Attachment Analysis ({{ report.attachment_findings.total_attachments }} Quarantined)</div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Filename</th>
+          <th style="width: 15%;">Size</th>
+          <th style="width: 45%;">SHA-256 Digest</th>
+          <th style="width: 15%;">Content-Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for att in report.attachment_findings.attachments %}
+        <tr>
+          <td>{{ att.filename }}</td>
+          <td>{{ att.size_bytes }} B</td>
+          <td class="mono">{{ att.sha256 }}</td>
+          <td>{{ att.content_type }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div style="font-size: 8.5pt; color: #57606a; margin-bottom: 14px;">
+      <em>Safe Storage: All attachments are preserved in isolated quarantine and are never executed.</em>
+    </div>
+    {% endif %}
+
+    <!-- 9. GEO / ORIGIN FORENSICS -->
+    {% if report.geo_findings %}
+    <div class="section-title">Network Origin &amp; Geolocation Forensics</div>
+    <table class="data-table">
+      <tr>
+        <th style="width: 25%;">Selected Origin IP</th>
+        <td class="mono"><strong>{{ report.geo_findings.selected_origin_ip or "None determined" }}</strong> ({{ report.geo_findings.selection_method }})</td>
+      </tr>
+      <tr>
+        <th>Origin Confidence</th>
+        <td>{{ report.geo_findings.confidence }}</td>
+      </tr>
+      <tr>
+        <th>Location</th>
+        <td>{{ report.geo_findings.city or "Unknown City" }}, {{ report.geo_findings.country or "Unknown Country" }}</td>
+      </tr>
+      <tr>
+        <th>Autonomous System (ASN)</th>
+        <td>{{ ("AS" ~ report.geo_findings.asn ~ " " ~ (report.geo_findings.asn_org or "")) if report.geo_findings.asn else "N/A" }}</td>
+      </tr>
+      <tr>
+        <th>Network Infrastructure Flags</th>
+        <td>
+          Tor Exit: {{ "YES" if report.geo_findings.is_tor else "No" }} • 
+          VPN: {{ "YES" if report.geo_findings.is_vpn else "No" }} • 
+          Proxy: {{ "YES" if report.geo_findings.is_proxy else "No" }} • 
+          Hosting/Datacenter: {{ "YES" if report.geo_findings.is_hosting else "No" }}
+        </td>
+      </tr>
+    </table>
+    {% if report.geo_findings.is_documentation_range %}
+    <div class="alert-box alert-warning">
+      <strong>Notice:</strong> The selected IP belongs to a test, documentation, or private network range (RFC 5737 / RFC 1918). Geolocation enrichment reflects mock forensic baseline fixtures.
+    </div>
+    {% endif %}
+    <div style="font-size: 8.5pt; color: #57606a; margin-bottom: 14px;">
+      <em>{{ report.geo_findings.disclaimer }}</em>
+    </div>
+    {% endif %}
+
+    <!-- 10. CORRELATION ASSESSMENT -->
+    {% if report.correlation %}
+    <div class="section-title">Correlated Forensic Synthesis (v{{ report.correlation.correlation_version }})</div>
+    <div class="box">
+      <div style="margin-bottom: 8px;">
+        <strong>Multi-Signal Rating:</strong> {{ report.correlation.final_score }} / 100 • 
+        <strong>Verdict:</strong> {{ report.correlation.final_assessment }} • 
+        <strong>Confidence:</strong> {{ report.correlation.correlation_confidence }}
+      </div>
+      <div style="font-size: 8.5pt; color: #57606a;">
+        <em>{{ report.correlation.score_explanation }}</em>
+      </div>
+    </div>
+
+    <!-- Engine Breakdown -->
+    {% if report.correlation.engine_breakdown %}
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Intelligence Engine</th>
+          <th style="width: 15%;">Normalized Value</th>
+          <th style="width: 15%;">Effective Weight</th>
+          <th style="width: 15%;">Contribution</th>
+          <th>Summary</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for eng, item in report.correlation.engine_breakdown.items() %}
+        <tr>
+          <td><strong>{{ eng|upper }}</strong></td>
+          <td>{{ item.normalized_value }}</td>
+          <td>{{ item.effective_weight }}%</td>
+          <td><strong>{{ item.contribution }} pts</strong></td>
+          <td style="font-size: 8.5pt;">{{ item.summary_text }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+
+    <!-- Top Evidence -->
+    {% if report.correlation.top_evidence %}
+    <div style="font-weight: 600; font-size: 10pt; margin: 12px 0 6px 0;">Ranked Top Evidence</div>
+    <table class="data-table">
+      <thead><tr><th style="width: 8%;">Rank</th><th style="width: 15%;">Engine</th><th style="width: 15%;">Impact</th><th>Finding Description</th></tr></thead>
+      <tbody>
+        {% for ev in report.correlation.top_evidence %}
+        <tr>
+          <td>#{{ ev.rank }}</td>
+          <td>{{ ev.engine }}</td>
+          <td><span class="badge {% if ev.impact == 'high' %}badge-high-risk{% elif ev.impact == 'medium' %}badge-suspicious{% else %}badge-inconclusive{% endif %}">{{ ev.impact }}</span></td>
+          <td>{{ ev.description }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+
+    <!-- Cross-Engine Conflicts -->
+    {% if report.correlation.conflicts %}
+    <div class="alert-box alert-warning">
+      <strong>Cross-Engine Conflicts Detected:</strong>
+      <ul style="margin: 4px 0 0 0; padding-left: 20px;">
+        {% for c in report.correlation.conflicts %}
+        <li>[{{ c.conflict_type }}] {{ c.description }} — <em>Reconciliation: {{ c.reconciliation }}</em></li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <!-- Limitations -->
+    {% if report.correlation.limitations %}
+    <div style="font-size: 8.5pt; color: #57606a; margin-top: 8px;">
+      <strong>Assessment Limitations &amp; Caveats:</strong>
+      <ul style="margin: 2px 0 0 0; padding-left: 20px;">
+        {% for lim in report.correlation.limitations %}
+        <li>{{ lim }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+    {% endif %}
+
+    <!-- 11. AUDIT TIMELINE -->
+    {% if report.audit_timeline and report.audit_timeline.events %}
+    <div class="section-title">Forensic Audit Trail &amp; Chain Verification</div>
+    <div style="margin-bottom: 8px; font-size: 9pt;">
+      Audit Chain Status: 
+      {% if report.audit_timeline.audit_chain_valid %}
+        <span class="badge badge-benign">VALID (Cryptographically Intact)</span>
+      {% else %}
+        <span class="badge badge-high-risk">INVALID (Integrity Anomaly Detected)</span>
+      {% endif %}
+      • Total Lifecycle Events: {{ report.audit_timeline.total_events }}
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width: 6%;">Seq</th>
+          <th style="width: 20%;">Timestamp (UTC)</th>
+          <th style="width: 25%;">Event Type</th>
+          <th style="width: 15%;">Actor</th>
+          <th>Message</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ev in report.audit_timeline.events %}
+        <tr>
+          <td>#{{ ev.event_sequence }}</td>
+          <td class="mono">{{ ev.timestamp }}</td>
+          <td class="mono">{{ ev.event_type }}</td>
+          <td>{{ ev.actor }}</td>
+          <td>{{ ev.message }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+
+    <!-- 12. ANALYSIS RUN HISTORY -->
+    {% if report.analysis_runs and report.analysis_runs.runs %}
+    <div class="section-title">Engine Execution Run History</div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Engine</th>
+          <th style="width: 12%;">Status</th>
+          <th style="width: 12%;">Version</th>
+          <th style="width: 12%;">Duration</th>
+          <th style="width: 25%;">Input Fingerprint</th>
+          <th style="width: 25%;">Output Fingerprint</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in report.analysis_runs.runs %}
+        <tr>
+          <td><strong>{{ r.engine_name|upper }}</strong></td>
+          <td>{{ r.status }}</td>
+          <td>v{{ r.version }}</td>
+          <td>{{ r.duration_ms }} ms</td>
+          <td class="mono">{{ r.input_fingerprint[:12] ~ '...' if r.input_fingerprint else 'N/A' }}</td>
+          <td class="mono">{{ r.output_fingerprint[:12] ~ '...' if r.output_fingerprint else 'N/A' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+
+    <!-- 13. PROVENANCE & EVIDENCE MANIFEST -->
+    {% if report.provenance or report.evidence_manifest %}
+    <div class="section-title">Provenance &amp; Evidence Manifest</div>
+    {% if report.provenance %}
+    <div class="box" style="font-size: 8.5pt; margin-bottom: 12px;">
+      <div style="font-weight: 600; margin-bottom: 4px;">Software &amp; Threat Intelligence Versions</div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
+        <div>Parser: v{{ report.provenance.parser_version or '1.0.0' }}</div>
+        <div>Rules Engine: v{{ report.provenance.rules_engine_version or '1.0.0' }}</div>
+        <div>ML Model: v{{ report.provenance.ml_model_version or '1.0.0' }}</div>
+        <div>IOC Feed: v{{ report.provenance.ioc_feed_version or 'unknown' }}</div>
+        <div>Geo DB: v{{ report.provenance.geo_database_version or 'unknown' }}</div>
+        <div>Correlation Policy: v{{ report.provenance.correlation_policy_version or '1.0.0' }}</div>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if report.evidence_manifest and report.evidence_manifest.artifacts %}
+    <div style="font-size: 9pt; margin-bottom: 6px;">
+      <strong>Composite Manifest SHA-256:</strong> <span class="mono">{{ report.evidence_manifest.manifest_sha256 }}</span>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width: 18%;">Artifact Type</th>
+          <th style="width: 30%;">Name</th>
+          <th style="width: 12%;">Size</th>
+          <th>SHA-256 Digest</th>
+          <th style="width: 12%;">Classification</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in report.evidence_manifest.artifacts %}
+        <tr>
+          <td><strong>{{ a.artifact_type }}</strong></td>
+          <td>{{ a.artifact_name }}</td>
+          <td>{{ a.size_bytes }} B</td>
+          <td class="mono">{{ a.sha256 }}</td>
+          <td>{{ "Primary Evidence" if a.immutable else "Derived Artifact" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+    {% endif %}
+
+    <!-- 14. FORENSIC DISCLAIMER -->
+    <div class="disclaimer-box">
+      <strong>Forensic Disclaimer &amp; Limitations Notice:</strong><br>
+      {{ report.forensic_disclaimer }}
+    </div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "ml_datasets/phishing/phishing-2024": {
+    "sha256": "60afa40a2757170093a2bde31ec9cda4e54d33992203ce04bfbbc86d2e5e5b99",
+    "size_bytes": 15457816
+  },
+  "ml_datasets/phishing/phishing-2025": {
+    "sha256": "f1fa7e0fe35c9a16f36d9aa20ade7e1d3908d1d0c1d917b8c53c8aa799ec1c8f",
+    "size_bytes": 18769863
+  },
+  "ml_datasets/kaggle/emails.csv": {
+    "sha256": "a605f0a2ca4a4feaa557eb0f2be825914906dca816066d7e58983e7e2e8bd274",
+    "size_bytes": 1426122219
+  },
+  "ml_datasets/spamassassin/20021010_easy_ham.tar.bz2": {
+    "sha256": "f9fc56e1f68780f9afdc6d23a2e24c4584af988afc58bbfabae500e51f3a2f36",
+    "size_bytes": 1677144
+  },
+  "ml_datasets/spamassassin/20050311_spam_2.tar.bz2": {
+    "sha256": "44280a0e28bf7645b2279e8e42659271ad82c6f40bf8d364dbda7f1df344a765",
+    "size_bytes": 2059029
+  }
+}

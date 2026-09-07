@@ -1,0 +1,94 @@
+{
+  "database_version": "2026.09.1",
+  "description": "Deterministic local GeoIP and ASN database for email origin forensic analysis",
+  "records": {
+    "198.51.100.1": {
+      "ip": "198.51.100.1",
+      "country_code": "US",
+      "country_name": "United States",
+      "region": "California",
+      "city": "San Jose",
+      "latitude": 37.3382,
+      "longitude": -121.8863,
+      "asn": 13335,
+      "asn_org": "CLOUDFLARENET"
+    },
+    "198.51.100.50": {
+      "ip": "198.51.100.50",
+      "country_code": "NL",
+      "country_name": "Netherlands",
+      "region": "North Holland",
+      "city": "Amsterdam",
+      "latitude": 52.3676,
+      "longitude": 4.9041,
+      "asn": 60781,
+      "asn_org": "LEASENEWEB"
+    },
+    "203.0.113.10": {
+      "ip": "203.0.113.10",
+      "country_code": "RU",
+      "country_name": "Russian Federation",
+      "region": "Moscow",
+      "city": "Moscow",
+      "latitude": 55.7558,
+      "longitude": 37.6173,
+      "asn": 49505,
+      "asn_org": "SELECTEL"
+    },
+    "203.0.113.199": {
+      "ip": "203.0.113.199",
+      "country_code": "RO",
+      "country_name": "Romania",
+      "region": "Bucharest",
+      "city": "Bucharest",
+      "latitude": 44.4268,
+      "longitude": 26.1025,
+      "asn": 9009,
+      "asn_org": "M247"
+    },
+    "192.0.2.1": {
+      "ip": "192.0.2.1",
+      "country_code": "DE",
+      "country_name": "Germany",
+      "region": "Hesse",
+      "city": "Frankfurt",
+      "latitude": 50.1109,
+      "longitude": 8.6821,
+      "asn": 24940,
+      "asn_org": "HETZNER"
+    },
+    "8.8.8.8": {
+      "ip": "8.8.8.8",
+      "country_code": "US",
+      "country_name": "United States",
+      "region": "California",
+      "city": "Mountain View",
+      "latitude": 37.4223,
+      "longitude": -122.0848,
+      "asn": 15169,
+      "asn_org": "GOOGLE"
+    },
+    "1.1.1.1": {
+      "ip": "1.1.1.1",
+      "country_code": "AU",
+      "country_name": "Australia",
+      "region": "Queensland",
+      "city": "Brisbane",
+      "latitude": -27.4698,
+      "longitude": 153.0251,
+      "asn": 13335,
+      "asn_org": "CLOUDFLARENET"
+    },
+    "2001:db8::1": {
+      "ip": "2001:db8::1",
+      "country_code": "GB",
+      "country_name": "United Kingdom",
+      "region": "England",
+      "city": "London",
+      "latitude": 51.5074,
+      "longitude": -0.1278,
+      "asn": 2856,
+      "asn_org": "BT-BRITISH-TELECOM"
+    }
+  }
+}

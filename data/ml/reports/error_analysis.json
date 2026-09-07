@@ -1,0 +1,32 @@
+{
+  "false_positives_count": 2,
+  "false_negatives_count": 2,
+  "false_positive_samples": [
+    {
+      "source_id": "harris-s/deleted_items/11.",
+      "subject": "Don't let your Vision Benefits expire. Get FREE Shipping before 12/31/01.",
+      "probability": 0.5345606868879452,
+      "reason": "Legitimate email classified as phishing due to high commercial/financial terms"
+    },
+    {
+      "source_id": "gilbertsmith-d/all_documents/111.",
+      "subject": "Information you requested",
+      "probability": 0.5082153885645396,
+      "reason": "Legitimate email classified as phishing due to high commercial/financial terms"
+    }
+  ],
+  "false_negative_samples": [
+    {
+      "source_id": "phishing-2024_156",
+      "subject": "=?UTF-8?Q?=5BAll=5D_Asking_you_to_participate_in_an_questionnaire_?=\n\t=?UTF-8?Q?about_Honeypots=3A_=E2=80=9CKnow_your_Honeypot=E2=80=9D=2E?=",
+      "probability": 0.46011591532639856,
+      "reason": "Phishing email classified as legitimate (sparse content or generic greeting)"
+    },
+    {
+      "source_id": "phishing-2024_30",
+      "subject": "Sorry we missed you! Schedule your next delivery date.",
+      "probability": 0.26208668961540715,
+      "reason": "Phishing email classified as legitimate (sparse content or generic greeting)"
+    }
+  ]
+}

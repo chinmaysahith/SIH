@@ -1,0 +1,63 @@
+"""Stage 8 Forensic Audit Trail & Lifecycle Package."""
+
+from app.audit.models import (
+    ActorType,
+    AuditEventType,
+    AuditChainVerificationError,
+    AuditVerificationResponse,
+    CaseLifecycleState,
+    EngineName,
+    RunStatus,
+    ArtifactType,
+    TimelineEventItem,
+    TimelineResponse,
+    AnalysisRunItem,
+    AnalysisRunsResponse,
+    ProvenanceResponse,
+    EvidenceArtifactItem,
+    EvidenceManifestResponse,
+)
+from app.audit.hashing import (
+    canonical_json,
+    compute_sha256,
+    compute_fingerprint,
+    compute_event_hash,
+)
+from app.audit.service import (
+    record_event,
+    verify_case_audit_chain,
+    start_analysis_run,
+    finish_analysis_run,
+    record_evidence_manifest,
+    compute_composite_manifest_sha256,
+    create_provenance_snapshot,
+)
+
+__all__ = [
+    "ActorType",
+    "AuditEventType",
+    "AuditChainVerificationError",
+    "AuditVerificationResponse",
+    "CaseLifecycleState",
+    "EngineName",
+    "RunStatus",
+    "ArtifactType",
+    "TimelineEventItem",
+    "TimelineResponse",
+    "AnalysisRunItem",
+    "AnalysisRunsResponse",
+    "ProvenanceResponse",
+    "EvidenceArtifactItem",
+    "EvidenceManifestResponse",
+    "canonical_json",
+    "compute_sha256",
+    "compute_fingerprint",
+    "compute_event_hash",
+    "record_event",
+    "verify_case_audit_chain",
+    "start_analysis_run",
+    "finish_analysis_run",
+    "record_evidence_manifest",
+    "compute_composite_manifest_sha256",
+    "create_provenance_snapshot",
+]
